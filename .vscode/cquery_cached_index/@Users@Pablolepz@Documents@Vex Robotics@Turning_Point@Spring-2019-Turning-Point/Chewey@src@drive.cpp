@@ -53,14 +53,14 @@ void move_lift()
 {
   if (master.get_digital(E_CONTROLLER_DIGITAL_R1) == 1)
   {
-    lift_left.move_velocity(200);
-    lift_right.move_velocity(200);
+    lift_left.move_velocity(100);
+    lift_right.move_velocity(100);
     liftTarDeg = lift_right.get_position();
   }
   else if (master.get_digital(E_CONTROLLER_DIGITAL_R2) == 1)
   {
-    lift_left.move_velocity(-200);
-    lift_right.move_velocity(-200);
+    lift_left.move_velocity(-100);
+    lift_right.move_velocity(-100);
     liftTarDeg = lift_right.get_position();
   }
   else
@@ -75,13 +75,13 @@ void run_intake()
 {
   if (master.get_digital(E_CONTROLLER_DIGITAL_L1) == 1)
   {
-    intake_left.move_velocity(200);
-    intake_right.move_velocity(200);
+    intake_left.move_velocity(130);
+    intake_right.move_velocity(130);
   }
   else if (master.get_digital(E_CONTROLLER_DIGITAL_L2) == 1)
   {
-    intake_left.move_velocity(-200);
-    intake_right.move_velocity(-200);
+    intake_left.move_velocity(-130);
+    intake_right.move_velocity(-130);
   }
   else
   {
@@ -98,8 +98,10 @@ void set_catapult()
     Catapult_left.move_velocity(40);
   }
   catapultTar = Catapult_right.get_position();
-  Catapult_right.move_absolute(catapultTar, 0);
-  Catapult_left.move_absolute(catapultTar, 0);
+  // Catapult_right.move_absolute(catapultTar, 0);
+  // Catapult_left.move_absolute(catapultTar, 0);
+  Catapult_right.move_velocity(0);
+  Catapult_left.move_velocity(0);
 }
 
 void run_catapult()
@@ -108,7 +110,15 @@ void run_catapult()
   {
     Catapult_right.move_velocity(40);
     Catapult_left.move_velocity(40);
-    delay(1000);
+    delay(500);
+    while (catapult_lim.get_value() != 0)
+    {
+      Catapult_right.move_velocity(40);
+      Catapult_left.move_velocity(40);
+    }
+    Catapult_right.move_velocity(0);
+    Catapult_left.move_velocity(0);
+    delay(180);
     set_catapult();
   }
 }
